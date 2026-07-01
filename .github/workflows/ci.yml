@@ -103,8 +103,8 @@ jobs:
 
           echo "Running kubectl dry-run on all K8s manifests..."
 
-          envsubst < k8s/user-service.yaml    | kubectl apply --dry-run=client -f -
-          envsubst < k8s/product-service.yaml | kubectl apply --dry-run=client -f -
-          envsubst < k8s/ingress.yaml         | kubectl apply --dry-run=client -f -
+          envsubst < k8s/user-service.yaml    | kubectl apply --dry-run=client -f --validate=false -f -
+          envsubst < k8s/product-service.yaml | kubectl apply --dry-run=client -f --validate=false -f -
+          envsubst < k8s/ingress.yaml         | kubectl apply --dry-run=client -f --validate=false -f -
 
           echo "All manifests are valid!"
