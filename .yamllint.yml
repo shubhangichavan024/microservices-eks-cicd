@@ -1,38 +1,41 @@
 ---
-# .yamllint.yml
-# This file tells yamllint which rules to enforce and which to relax.
-# Place this file at the ROOT of your repository (same level as README.md).
-# yamllint automatically picks it up when it runs in CI.
+# .yamllint.yml  — place at repo root (same level as README.md)
+# Replaces the previous version. Two new fixes:
+#   1. indent-sequences: whatever  → accepts lists indented OR not indented
+#   2. new-line-at-end-of-file: disable → Windows editors often omit this
 
-extends: default   # Start with yamllint's default rules, then override below
+extends: default
 
 rules:
 
-  # ── DISABLED RULES ─────────────────────────────────────────────────────────
-
+  # ── Disabled completely ────────────────────────────────────────────────────
   document-start: disable
-  # Why disabled: yamllint wants every file to start with "---"
-  # but Kubernetes YAML files commonly start directly with "apiVersion:"
-  # Both are valid YAML. We disable this to avoid false positives.
+  # Reason: K8s YAML files normally start with "apiVersion:" not "---"
 
-  # ── RELAXED RULES ──────────────────────────────────────────────────────────
+  new-line-at-end-of-file: disable
+  # Reason: Windows editors (VS Code, Notepad++) often save files without
+  # a trailing newline. This is cosmetic — it does not affect K8s behaviour.
 
+  # ── Relaxed rules ─────────────────────────────────────────────────────────
   indentation:
-    spaces: 2                # Use 2-space indentation (Kubernetes standard)
-    indent-sequences: false  # Don't enforce extra indentation for list items
+    spaces: 2
+    indent-sequences: whatever
+    # "whatever" means: accept list dashes (-) whether they are indented or not.
+    # Your cluster.yaml has the "-" indented 2 spaces under managedNodeGroups,
+    # which is valid YAML. "false" expected it at column 0 — that was wrong.
     check-multi-line-strings: false
 
   empty-lines:
-    max: 2          # Allow up to 2 blank lines between sections (was 0)
-    max-start: 0    # No blank lines at the start of a file
-    max-end: 1      # Allow 1 blank line at the end of a file (Windows editors add this)
+    max: 2          # Allow up to 2 blank lines between sections
+    max-start: 0
+    max-end: 1
 
   line-length:
-    max: 150        # Allow longer lines (image URLs in K8s YAML can be long)
-    level: warning  # Warn only, don't fail
+    max: 150        # ECR image URLs are long
+    level: warning  # Warn only, never fail
 
   comments:
-    min-spaces-from-content: 1   # Allow "# comment" with 1 space (was 2)
+    min-spaces-from-content: 1   # Allow "key: value  # comment" with 1 space
 
   truthy:
     allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
