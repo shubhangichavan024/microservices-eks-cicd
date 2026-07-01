@@ -78,16 +78,16 @@ jobs:
           cache-to:   type=gha,mode=max
 
       # ── Build + tag + push Frontend image ─────────────────────────────────
-      - name: Build & Push — Frontend
-        uses: docker/build-push-action@v5
-        with:
-          context:    ./frontend
-          push:       true
-          tags: |
-            ${{ steps.login-ecr.outputs.registry }}/frontend:${{ github.sha }}
-            ${{ steps.login-ecr.outputs.registry }}/frontend:latest
-          cache-from: type=gha
-          cache-to:   type=gha,mode=max
+      # - name: Build & Push — Frontend
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context:    ./frontend
+      #     push:       true
+      #     tags: |
+      #       ${{ steps.login-ecr.outputs.registry }}/frontend:${{ github.sha }}
+      #       ${{ steps.login-ecr.outputs.registry }}/frontend:latest
+      #     cache-from: type=gha
+      #     cache-to:   type=gha,mode=max
 
       # ── Print a summary of what was pushed ────────────────────────────────
       - name: Print pushed images
