@@ -94,23 +94,10 @@ jobs:
       - name: Install gettext (provides envsubst)
         run: sudo apt-get install -y gettext
 
-      - name: Validate Kubernetes Manifests (Offline)
-        run: |
-          # 1. Setup local variables
-          export ECR_REGISTRY="123456789012.dkr.ecr.us-east-1.amazonaws.com"
-          export IMAGE_TAG="ci-dry-run-test"
-          export NAMESPACE="default"
-          
-          # 2. Create a temporary output directory
-          mkdir -p .processed-k8s
-          
-          # 3. Process the files with envsubst
-          envsubst < k8s/user-service.yaml    > .processed-k8s/user-service.yaml
-          envsubst < k8s/product-service.yaml > .processed-k8s/product-service.yaml
-          envsubst < k8s/ingress.yaml         > .processed-k8s/ingress.yaml
-          
-          # 4. Download kubeconform asset directly from GitHub Releases
-          curl -L -s https://github.com | tar xz
-          
-          # 5. Run the validation tool
-          ./kubeconform -summary -ignore-missing-schemas .processed-k8s/
+      - name: Validate Kubernetes Manifests (Native Action)
+        uses: yannh/kubeconform-action@v0.1.3
+        with:
+          files: |
+            k8s/user-service.yaml
+            k8s/product-service.yaml
+            k8s/ingress.yaml
