@@ -109,6 +109,8 @@ jobs:
           envsubst < k8s/product-service.yaml > .processed-k8s/product-service.yaml
           envsubst < k8s/ingress.yaml         > .processed-k8s/ingress.yaml
           
-          # 4. Run the offline schema validation tool
+          # 4. Download kubeconform asset directly from GitHub Releases
           curl -L -s https://github.com | tar xz
+          
+          # 5. Run the validation tool
           ./kubeconform -summary -ignore-missing-schemas .processed-k8s/
