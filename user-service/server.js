@@ -11,7 +11,7 @@ app.get('/users', (req, res) => {
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-app.listen(3000, () => console.log('User service on :3000'));
+// app.listen(3000, () => console.log('User service on :3000'));
 
 // server.js — add these lines at the very bottom
 

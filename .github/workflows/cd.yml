@@ -166,8 +166,8 @@ jobs:
           echo "⏳ Waiting for product-service rollout..."
           kubectl rollout status deployment/product-service -n $NAMESPACE --timeout=300s
 
-          echo "⏳ Waiting for frontend rollout..."
-          kubectl rollout status deployment/frontend        -n $NAMESPACE --timeout=300s
+         # echo "⏳ Waiting for frontend rollout..."
+         # kubectl rollout status deployment/frontend        -n $NAMESPACE --timeout=300s
 
       # ── Print final state — always runs even if deploy failed ─────────────
       - name: Show deployment result
